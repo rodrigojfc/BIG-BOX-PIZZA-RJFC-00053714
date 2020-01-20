@@ -1,29 +1,24 @@
 #include <iostream>
 using namespace std;
 
-int contrasenya(int choice){
-    char arr1 [] = "fstream";
-    char arr2 [] = "";
-    int correct;
-    if (choice == 1){
-        cout<<"\tIngresar la contrasenya: "<<endl;
-        cin>>arr2;
-    }
-    for (int i = 0; i < 7; i++){
-      cout << arr2[i];
-      if (arr2[i] == arr1[i]){
-        correct = 1;
-        i++;
-      }
-      else if (arr2[i] != arr1[i]){
-        correct = 0;
-        cout << "\tLa contrasenya es invalida" << endl;
-        break;
-      }
 
-    }
-   return 0;
-}
+struct cust_data{
+    int house_num;
+    string  colonia, city, state;
+};
+
+struct deliver_data{
+    string cust_name, payment_meth;
+    cust_data customer;
+    int phone_num, total_am, meal, beverage, side_dish;
+
+};
+
+struct rest_data{
+    string cust_name;
+    int num_people, main_dish, side_dish, total_am;
+};
+
 
 int main(void){
     int seleccion;
@@ -34,8 +29,6 @@ int main(void){
     while (seleccion != 1 && seleccion != 2){
         cout<<"\tIngrese numero 1 o 2"<<endl;
         cin>>seleccion;
-    }
-    contrasenya(seleccion);
-    
+    }    
   
 }
