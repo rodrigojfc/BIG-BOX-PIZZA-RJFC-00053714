@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #define PASSWORD "fstream" // DECLARACION DEFINE
 using namespace std;
 
@@ -72,12 +73,13 @@ int idOrder = 1;
 bool loginUser();
 void printMenu(void);
 void addOrder(delivery *array);
+void addOrder(houseOrder *array);
 
 int main(void)
 {
     //Declaracion de variables y arreglos a usar
-    delivery *dArray = NULL;
-    houseOrder *hArray = NULL;
+    delivery *dArray;
+    houseOrder *hArray;
     int size = 0;
     int option = 0;
     //Verificacion para iniciar sesion
@@ -159,10 +161,16 @@ void printMenu(void)
     cout << "2. Agregar ordenes a restaurante" << endl;
     cout << "3. Ver ordenes a domicilio" << endl;
     cout << "4. Ver ordenes en restaurante" << endl;
+    cout << "5. Despachar ordenes a domicilio"<< endl;
+    cout << "6. Despachar ordenes en restaurante" << endl;
+    cout << "7. Ver tiempo promedio de espera a domicilio" << endl;
+    cout << "8. Ver tiempo promedio de espera en restaurante" << endl;
+    cout << "9. Cancelar orden (Administrador)" << endl;
+    cout << "10. Calcular total de ventas"<< endl;
     cout << "Su opción:\t";
 }
 
-void addOrder(delivery *array)
+void addOrder(delivery* array)
 {
     int size = 0;
     int aux = 0;
@@ -252,7 +260,7 @@ void addOrder(delivery *array)
     }
 }
 
-void addOrder(houseOrder *array)
+void addOrder(houseOrder* array)
 {
     int size = 0;
     int aux = 0;
