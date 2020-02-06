@@ -69,20 +69,19 @@ struct houseOrder
 bool isAdmin = false;
 int idOrder = 1;
 vector<delivery> dList;
+vector<houseOrder> hList;
+
 
 //prototipos
 
 bool loginUser();
 void printMenu(void);
-void addOrder(delivery *array, vector<delivery> mylist);
+void addOrder();
 //void addOrder(houseOrder *array);
 
 int main(void)
 {
     //Declaracion de variables y arreglos a usar
-    vector<houseOrder> *hList;
-    delivery *dArray;
-    houseOrder* hArray;
     int size = 0;
     int option = 0;
     //Verificacion para iniciar sesion
@@ -100,7 +99,7 @@ int main(void)
         {
         case 1:
             //Agregar ordenes a domicilio
-        addOrder(dArray, dList);
+        addOrder();
             break;
         case 2:
             //addOrder(hArray);
@@ -118,6 +117,7 @@ int main(void)
         }
 
     } while (option != 0);
+
 
     return 0;
 }
@@ -170,22 +170,23 @@ void printMenu(void)
     cout << "8. Ver tiempo promedio de espera en restaurante" << endl;
     cout << "9. Cancelar orden (Administrador)" << endl;
     cout << "10. Calcular total de ventas"<< endl;
-    cout << "0. Salir"<< endl;
+    cout << "11. Salir"<< endl;
     cout << "Su opción:\t";
 }
 
-void addOrder(delivery *array, vector<delivery> mylist)
+void addOrder()
 {
     delivery auxArray;
     int aux = 0, choice = 0;
     
     do{
-
         cout << "\n1- Ingresar nuevo pedido\n";
         cout << "2- salir\n";
         cout << "Su opcion:\t"; cin >> choice; cin.ignore();
         cout << endl << endl;
+        
         if(choice == 1){
+        
         cout << "Nombre:\t";
         getline(cin, auxArray.deliveryInfo.name);
         cout << "Dirección\n" << endl;
@@ -262,9 +263,14 @@ void addOrder(delivery *array, vector<delivery> mylist)
         cin >> auxArray.cellphone;
         cin.ignore();
         
-        mylist.push_back(auxArray);}
-        else 
-            choice = 2;
+        dList.push_back(auxArray);}
+        else
+        {
+         choice = 2;
+         cout << "\tRegresando al menu principal ...\n";
+        }
+        
+        
     }while(choice != 2);
     
 }
