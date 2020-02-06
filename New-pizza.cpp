@@ -118,6 +118,7 @@ int main(void)
         }
 
     } while (option != 0);
+
     return 0;
 }
 
@@ -158,7 +159,7 @@ bool loginUser()
 
 void printMenu(void)
 {
-    cout << "SISTEMA DE DESPACHO PIZZERIA BIG BOX PIZZA" << endl;
+    cout << "\n\nSISTEMA DE DESPACHO PIZZERIA BIG BOX PIZZA" << endl;
     cout << "1. Agregar ordenes a domicilio" << endl;
     cout << "2. Agregar ordenes a restaurante" << endl;
     cout << "3. Ver ordenes a domicilio" << endl;
@@ -169,6 +170,7 @@ void printMenu(void)
     cout << "8. Ver tiempo promedio de espera en restaurante" << endl;
     cout << "9. Cancelar orden (Administrador)" << endl;
     cout << "10. Calcular total de ventas"<< endl;
+    cout << "0. Salir"<< endl;
     cout << "Su opción:\t";
 }
 
@@ -179,7 +181,7 @@ void addOrder(delivery *array, vector<delivery> mylist)
     
     do{
 
-        cout << "1- Ingresar nuevo pedido\n";
+        cout << "\n1- Ingresar nuevo pedido\n";
         cout << "2- salir\n";
         cout << "Su opcion:\t"; cin >> choice; cin.ignore();
         cout << endl << endl;
