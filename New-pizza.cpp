@@ -76,8 +76,8 @@ vector<houseOrder> hList;
 
 bool loginUser();
 void printMenu(void);
-void addOrder();
-//void addOrder(houseOrder *array);
+void addOrder(vector<delivery> dlist);
+void addOrder(vector <houseOrder> hList);
 
 int main(void)
 {
@@ -99,10 +99,10 @@ int main(void)
         {
         case 1:
             //Agregar ordenes a domicilio
-        addOrder();
+        addOrder(dList);
             break;
         case 2:
-            //addOrder(hArray);
+            addOrder(hList);
             break;
         case 3:
             break;
@@ -116,8 +116,7 @@ int main(void)
             break;
         }
 
-    } while (option != 0);
-
+    } while (option != 12);
 
     return 0;
 }
@@ -170,11 +169,12 @@ void printMenu(void)
     cout << "8. Ver tiempo promedio de espera en restaurante" << endl;
     cout << "9. Cancelar orden (Administrador)" << endl;
     cout << "10. Calcular total de ventas"<< endl;
-    cout << "11. Salir"<< endl;
+    cout << "11. Cambiar de usuario" << endl;
+    cout << "12. Salir"<< endl;
     cout << "Su opción:\t";
 }
 
-void addOrder()
+void addOrder(vector<delivery> dlist)
 {
     delivery auxArray;
     int aux = 0, choice = 0;
@@ -275,22 +275,22 @@ void addOrder()
     
 }
 
-void addOrder(houseOrder* array)
+void addOrder(vector <houseOrder> hList)
 {
-    int size = 0;
-    int aux = 0;
-    cout << "Cantidad de pedidos a ingresar: ";
-    cin >> size;
-    cin.ignore();
+    houseOrder array;
+    int aux = 0, choice = 0;
 
-    array = new houseOrder[size];
+    do{ 
+        cout << "\n1- Ingresar nuevo pedido\n";
+        cout << "2- salir\n";
+        cout << "Su opcion:\t"; cin >> choice; cin.ignore();
+        cout << endl << endl;
 
-    for (int i = 0; i < size; i++)
-    {
+        if(choice == 1){
         cout << "Nombre:\t";
-        getline(cin, array[i].houseInfo.name);
+        getline(cin, array.houseInfo.name);
         cout << "Ingrese personas por mesa: ";
-        cin >> array[i].pTable;
+        cin >> array.pTable;
         cin.ignore();
 
         cout << "1 - Pan con ajo" << endl;
@@ -301,11 +301,11 @@ void addOrder(houseOrder* array)
         cin.ignore();
 
         if (aux == 1)
-            array[i].houseInfo.pStarter = garlicBread;
+            array.houseInfo.pStarter = garlicBread;
         else if (aux == 2)
-            array[i].houseInfo.pStarter = pizzaRolls;
+            array.houseInfo.pStarter = pizzaRolls;
         else
-            array[i].houseInfo.pStarter = cheeseSticks;
+            array.houseInfo.pStarter = cheeseSticks;
 
         cout << "1 - Pizza" << endl;
         cout << "2 - Pasta" << endl;
@@ -315,11 +315,11 @@ void addOrder(houseOrder* array)
         cin.ignore();
 
         if (aux == 1)
-            array[i].houseInfo.pDish = pizza;
+            array.houseInfo.pDish = pizza;
         else if (aux == 2)
-            array[i].houseInfo.pDish = pasta;
+            array.houseInfo.pDish = pasta;
         else
-            array[i].houseInfo.pDish = lasagna;
+            array.houseInfo.pDish = lasagna;
 
         cout << "1 - Cerveza" << endl;
         cout << "2 - Soda" << endl;
@@ -329,13 +329,13 @@ void addOrder(houseOrder* array)
         cin.ignore();
 
         if (aux == 1)
-            array[i].houseInfo.pDrink = beer;
+            array.houseInfo.pDrink = beer;
         else if (aux == 2)
-            array[i].houseInfo.pDrink = soda;
+            array.houseInfo.pDrink = soda;
         else
-            array[i].houseInfo.pDrink = tea;
+            array.houseInfo.pDrink = tea;
 
-        array[i].houseInfo.idOrder = idOrder++;
+        array.houseInfo.idOrder = idOrder++;
 
         cout << "Tipo de pago" << endl;
         cout << "1 - Tarjeta" << endl;
@@ -345,14 +345,24 @@ void addOrder(houseOrder* array)
         cin.ignore();
 
         if (aux == 1)
-            array[i].houseInfo.pay = card;
+            array.houseInfo.pay = card;
         else
-            array[i].houseInfo.pay = cash;
+            array.houseInfo.pay = cash;
 
         cout << "Monto: ";
-        cin >> array[i].houseInfo.total;
+        cin >> array.houseInfo.total;
         cin.ignore();
-    }
+
+        hList.push_back(array);
+        
+        }
+        else
+        {
+            choice = 2;
+            cout << "Saliendo....\n"; 
+        }
+        
+    }while(choice != 2);
 }
 
 void searchByName(delivery *array, int size)
