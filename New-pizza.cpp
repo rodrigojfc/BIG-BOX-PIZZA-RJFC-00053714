@@ -71,21 +71,25 @@ int idOrder = 1;
 
 
 //prototipos
-
 bool loginUser();
 void printMenu(void);
 void addOrder(vector<delivery> &dlist);
 void addOrder(vector <houseOrder> &hList);
 void checkOrders(vector<delivery> dList);
 void checkOrders(vector<houseOrder> hList);
+void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist);
+void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist);
+
 
 int main(void)
 {
-    //Declaracion de variables y arreglos a usar
+    //Declaracion de variables y listas a usar
     int size = 0;
     int option = 0;
     vector<delivery> dList;
     vector<houseOrder> hList;
+    vector<delivery>  dispatchedList;
+    vector<houseOrder> servedList;
 
 
     //Verificacion para iniciar sesion
@@ -115,9 +119,11 @@ int main(void)
             checkOrders(hList);
             break;
         case 5:
+            dispatchOrders(dList, dispatchedList);
         break;
 
         case 6:
+            dispatchOrders(hList, servedList);
         break;
 
         case 7:
@@ -390,7 +396,7 @@ void addOrder(vector <houseOrder> &hList)
         else
         {
             choice = 2;
-            cout << "Saliendo....\n"; 
+            cout << "Regresando al menu principal....\n"; 
         }
         
     }while(choice != 2);
@@ -443,9 +449,9 @@ void checkOrders(vector<delivery> dList){
     else{
         delivery myArray = dList.front();
         cout << "\nId de orden:\t" <<myArray.deliveryInfo.idOrder << endl;
-        cout << "Entrada:\t" << myArray.deliveryInfo.pStarter << endl;
+        /*cout << "Entrada:\t" << myArray.deliveryInfo.pStarter << endl;
         cout <<"Plato fuerte:\t"<<myArray.deliveryInfo.pDish << endl;
-        cout <<"Bebida:\t" << myArray.deliveryInfo.pDrink << endl;
+        cout <<"Bebida:\t" << myArray.deliveryInfo.pDrink << endl;*/
         dList.pop_back();
         checkOrders(dList);
     }
@@ -460,13 +466,39 @@ void checkOrders(vector<houseOrder> hList){
     if (hList.empty())
         cout <<"\nNo hay ordenes!";
     else{
-        houseOrder myArray = hList.front();
+        houseOrder myArray = hList.back();
         cout << "\nId de orden:\t" <<myArray.houseInfo.idOrder << endl;
-        cout << "Entrada:\t" << myArray.houseInfo.pStarter << endl;
+        /*cout << "Entrada:\t" << myArray.houseInfo.pStarter << endl;
         cout <<"Plato fuerte:\t"<<myArray.houseInfo.pDish << endl;
-        cout <<"Bebida:\t" << myArray.houseInfo.pDrink << endl;
+        cout <<"Bebida:\t" << myArray.houseInfo.pDrink << endl;*/
         hList.pop_back();
         checkOrders(hList);
     }
 
+}
+
+void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist){
+    delivery myArray;
+    if (moyList.empty())
+        cout <<"Ordenes despachadas";
+    else{
+        delivery myArray = moyList.back();
+        dispatchedlist.push_back(myArray);
+        moyList.pop_back();
+        dispatchOrders(moyList, dispatchedlist);
+
+    }
+
+}
+
+void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist){
+    houseOrder myArray;
+        if (meuList.empty())
+            cout <<"Ordenes despachadas!\n";
+        else{
+            houseOrder myArray = meuList.back();
+            servedlist.push_back(myArray);
+            meuList.pop_back();
+            dispatchOrders(meuList, servedlist);
+        }
 }
