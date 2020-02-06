@@ -68,7 +68,6 @@ struct houseOrder
 //variables globales
 bool isAdmin = false;
 int idOrder = 1;
-vector<delivery> dList;
 vector<houseOrder> hList;
 
 
@@ -84,6 +83,8 @@ int main(void)
     //Declaracion de variables y arreglos a usar
     int size = 0;
     int option = 0;
+    vector<delivery> dList;
+
     //Verificacion para iniciar sesion
     if (!loginUser())
         return 0;
@@ -174,7 +175,7 @@ void printMenu(void)
     cout << "Su opción:\t";
 }
 
-void addOrder(vector<delivery> dlist)
+void addOrder(vector<delivery> &dlist)
 {
     delivery auxArray;
     int aux = 0, choice = 0;
@@ -400,4 +401,8 @@ void searchByName(houseOrder *array, int size)
         }
     }
     (!userExists) ? cout << "No existe el usuario" : cout << "";
+}
+
+void checkOrders(vector<delivery> dList){
+
 }
