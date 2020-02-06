@@ -68,15 +68,16 @@ struct houseOrder
 //variables globales
 bool isAdmin = false;
 int idOrder = 1;
-vector<houseOrder> hList;
 
 
 //prototipos
 
 bool loginUser();
 void printMenu(void);
-void addOrder(vector<delivery> dlist);
-void addOrder(vector <houseOrder> hList);
+void addOrder(vector<delivery> &dlist);
+void addOrder(vector <houseOrder> &hList);
+void checkOrders(vector<delivery> dList);
+void checkOrders(vector<houseOrder> hList);
 
 int main(void)
 {
@@ -84,6 +85,8 @@ int main(void)
     int size = 0;
     int option = 0;
     vector<delivery> dList;
+    vector<houseOrder> hList;
+
 
     //Verificacion para iniciar sesion
     if (!loginUser())
@@ -100,17 +103,39 @@ int main(void)
         {
         case 1:
             //Agregar ordenes a domicilio
-        addOrder(dList);
+            addOrder(dList);
             break;
         case 2:
             addOrder(hList);
             break;
         case 3:
+             checkOrders(dList);
             break;
         case 4:
+            checkOrders(hList);
             break;
+        case 5:
+        break;
 
-        case 0:
+        case 6:
+        break;
+
+        case 7:
+        break;
+
+        case 8:
+        break;
+
+        case 9:
+        break;
+
+        case 10:
+        break;
+
+        case 11:
+        break;
+
+        case 12:
             break;
 
         default:
@@ -175,6 +200,8 @@ void printMenu(void)
     cout << "Su opción:\t";
 }
 
+
+//funcion para agregar ordenes a domicilio a la lista
 void addOrder(vector<delivery> &dlist)
 {
     delivery auxArray;
@@ -263,8 +290,10 @@ void addOrder(vector<delivery> &dlist)
         cout << "Telefono: ";
         cin >> auxArray.cellphone;
         cin.ignore();
+
+        dlist.push_back(auxArray);
         
-        dList.push_back(auxArray);}
+        }
         else
         {
          choice = 2;
@@ -276,7 +305,8 @@ void addOrder(vector<delivery> &dlist)
     
 }
 
-void addOrder(vector <houseOrder> hList)
+//funcion para agregar ordenes en restaurante
+void addOrder(vector <houseOrder> &hList)
 {
     houseOrder array;
     int aux = 0, choice = 0;
@@ -403,6 +433,40 @@ void searchByName(houseOrder *array, int size)
     (!userExists) ? cout << "No existe el usuario" : cout << "";
 }
 
+//Funcion recursiva para ver ordenes a domicilio 
 void checkOrders(vector<delivery> dList){
+
+    vector<delivery> auxList;
+    
+    if (dList.empty())
+        cout <<"\nNo hay ordenes!";
+    else{
+        delivery myArray = dList.front();
+        cout << "\nId de orden:\t" <<myArray.deliveryInfo.idOrder << endl;
+        cout << "Entrada:\t" << myArray.deliveryInfo.pStarter << endl;
+        cout <<"Plato fuerte:\t"<<myArray.deliveryInfo.pDish << endl;
+        cout <<"Bebida:\t" << myArray.deliveryInfo.pDrink << endl;
+        dList.pop_back();
+        checkOrders(dList);
+    }
+}
+
+
+//Funcion recursiva para ver ordenes en restaurante
+void checkOrders(vector<houseOrder> hList){
+
+      vector<houseOrder> auxList;
+    
+    if (hList.empty())
+        cout <<"\nNo hay ordenes!";
+    else{
+        houseOrder myArray = hList.front();
+        cout << "\nId de orden:\t" <<myArray.houseInfo.idOrder << endl;
+        cout << "Entrada:\t" << myArray.houseInfo.pStarter << endl;
+        cout <<"Plato fuerte:\t"<<myArray.houseInfo.pDish << endl;
+        cout <<"Bebida:\t" << myArray.houseInfo.pDrink << endl;
+        hList.pop_back();
+        checkOrders(hList);
+    }
 
 }
