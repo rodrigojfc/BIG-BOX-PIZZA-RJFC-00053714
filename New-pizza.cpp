@@ -57,12 +57,14 @@ struct delivery
     address deliveryAddress;
     int cellphone;
     mainInfo deliveryInfo;
+    float toBill, toWait;
 };
 
 struct houseOrder
 {
     int pTable;
     mainInfo houseInfo;
+    float toBill, toWait;
 };
 
 //variables globales
