@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 #define PASSWORD "fstream" // DECLARACION DEFINE
 using namespace std;
 
@@ -81,6 +82,8 @@ void checkOrders(vector<delivery> dList);
 void checkOrders(vector<houseOrder> hList);
 void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist);
 void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist);
+void waitingtime(vector<delivery> myList, float myTime);
+void waitingtime(vector<houseOrder> myList, float myTime);
 
 
 int main(void)
@@ -92,6 +95,7 @@ int main(void)
     vector<houseOrder> hList;
     vector<delivery>  dispatchedList;
     vector<houseOrder> servedList;
+    float totalTime = 0;
 
 
     //Verificacion para iniciar sesion
@@ -112,26 +116,35 @@ int main(void)
             addOrder(dList);
             break;
         case 2:
+            //Agregar ordenes en restaurante
             addOrder(hList);
             break;
         case 3:
+            //Revisar ordenes a domicilio
              checkOrders(dList);
             break;
         case 4:
+            //Revisar ordenes en restaurante
             checkOrders(hList);
             break;
         case 5:
+            //despachar ordenes a domicilio
             dispatchOrders(dList, dispatchedList);
         break;
 
         case 6:
+            //despachar ordenes en restaurante
             dispatchOrders(hList, servedList);
         break;
 
         case 7:
+            //revisar tiempo de espera a domicilio
+            waitingtime(dList, totalTime);
         break;
 
         case 8:
+            //revisar tiempo de espera en restaurante
+             waitingtime(hList,  totalTime);
         break;
 
         case 9:
@@ -326,6 +339,12 @@ void addOrder(vector<delivery> &dlist)
 
         auxArray.deliveryInfo.idOrder = idOrder++;
 
+        if(dlist.empty())
+            auxArray.toWait = (1 * 1.35 + 1 * 1.10 + 1 * 1.5) + 15;
+        else
+            auxArray.toWait = (dlist.size() + 1) * ((1 * 1.35 + 1 * 1.10 + 1 * 1.5) + 15);
+        
+
         cout << "Tipo de pago" << endl;
         cout << "1 - Tarjeta" << endl;
         cout << "2 - Efectivo" << endl;
@@ -463,6 +482,11 @@ void addOrder(vector <houseOrder> &hList)
     }
 
         array.houseInfo.idOrder = idOrder++;
+        
+         if(hList.empty())
+            array.toWait = (1 * 1.35 + 1 * 1.10 + 1 * 1.5);
+        else
+            array.toWait = (hList.size() + 1) * (1 * 1.35 + 1 * 1.10 + 1 * 1.5);
 
         cout << "Tipo de pago" << endl;
         cout << "1 - Tarjeta" << endl;
@@ -486,43 +510,6 @@ void addOrder(vector <houseOrder> &hList)
         }
         
     }while(choice != 2);
-}
-
-void searchByName(delivery *array, int size)
-{
-    string aux = "";
-    bool userExists = false;
-    cout << "Nombre a buscar: ";
-    getline(cin, aux);
-
-    for (int i = 0; i < size; i++)
-    {
-        if (aux.compare(array[i].deliveryInfo.name) == 0)
-        {
-            //Imprimir datos del pedido
-            userExists = true;
-        }
-    }
-    (!userExists) ? cout << "No existe el usuario" : cout << "";
-}
-
-void searchByName(houseOrder *array, int size)
-{
-    string aux = "";
-    bool userExists = false;
-    cout << "Nombre a buscar: ";
-    getline(cin, aux);
-
-    for (int i = 0; i < size; i++)
-    {
-        if (aux.compare(array[i].houseInfo.name) == 0)
-        {
-            //Imprimir datos del pedido
-
-            userExists = true;
-        }
-    }
-    (!userExists) ? cout << "No existe el usuario" : cout << "";
 }
 
 //Funcion recursiva para ver ordenes a domicilio 
@@ -564,6 +551,7 @@ void checkOrders(vector<houseOrder> hList){
 
 }
 
+//Funcion para despachar ordenes a domicilio
 void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist){
     delivery myArray;
     if (moyList.empty())
@@ -578,6 +566,7 @@ void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist)
 
 }
 
+//Funcion para despachar ordenes a restaurante
 void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist){
     houseOrder myArray;
         if (meuList.empty())
@@ -590,4 +579,52 @@ void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist)
         }
 }
 
-void 
+//Funcion para ver tiempo total y promedio de espera a domicilio
+void waitingtime(vector<delivery> myList, float myTime)
+{
+    //si la lista esta vacia regresa el valor de tiempo total de espera y el tiempo de espera.
+    if (myList.empty()){
+        if(myTime <= 0){
+            cout<<"No hay tiempo de espera!\n";
+            return;
+        }
+        else{
+        cout <<"El tiempo total de espera es:\t" << floor (myTime) << endl;
+        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+1))<< endl;
+        }
+    }
+        
+    else{
+        // estructura para guardar informacion en la lista
+        delivery auxArray = myList.back();
+
+        myTime = myTime + auxArray.toWait;
+        myList.pop_back();
+        waitingtime(myList, myTime);
+    }
+}
+
+//Funcion para ver tiempo total y promedio de espera a domicilio
+ void waitingtime(vector<houseOrder> myList, float myTime)
+ {
+    //si la lista esta vacia regresa el valor de tiempo total de espera y el tiempo de espera.
+    if (myList.empty()){
+        if(myTime <= 0){
+            cout << "No hay tiempo de espera!\n";
+            return;
+        }
+        else{
+        cout <<"El tiempo total de espera es:\t" << floor (myTime) << endl;
+        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+1))<< endl;
+        }
+    }
+        
+    else{
+        // estructura para guardar informacion en la lista
+        houseOrder auxArray = myList.back();
+
+        myTime = myTime + auxArray.toWait;
+        myList.pop_back();
+        waitingtime(myList, myTime);
+    }
+ }
