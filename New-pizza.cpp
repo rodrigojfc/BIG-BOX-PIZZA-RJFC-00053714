@@ -57,14 +57,14 @@ struct delivery
     address deliveryAddress;
     int cellphone;
     mainInfo deliveryInfo;
-    float toBill, toWait;
+    float toWait;
 };
 
 struct houseOrder
 {
     int pTable;
     mainInfo houseInfo;
-    float toBill, toWait;
+    float toWait;
 };
 
 //variables globales
@@ -243,12 +243,27 @@ void addOrder(vector<delivery> &dlist)
         cin >> aux;
         cin.ignore();
 
-        if (aux == 1)
+    switch(aux){
+        case 1:
             auxArray.deliveryInfo.pStarter = garlicBread;
-        else if (aux == 2)
+            auxArray.deliveryInfo.total = 3.99;
+        break;
+
+        case 2:
             auxArray.deliveryInfo.pStarter = pizzaRolls;
-        else
+            auxArray.deliveryInfo.total = 4.99;
+        break;
+
+        case 3:
             auxArray.deliveryInfo.pStarter = cheeseSticks;
+            auxArray.deliveryInfo.total = 3.75;
+        break;
+
+        default:
+            cout<<"Opcion no valida!\n";
+        break;
+
+    }
 
         cout << "1 - Pizza" << endl;
         cout << "2 - Pasta" << endl;
@@ -257,12 +272,28 @@ void addOrder(vector<delivery> &dlist)
         cin >> aux;
         cin.ignore();
 
-        if (aux == 1)
+            switch(aux)
+            {
+        case 1:
             auxArray.deliveryInfo.pDish = pizza;
-        else if (aux == 2)
+            auxArray.deliveryInfo.total += 13.99;
+        break;
+
+        case 2:
             auxArray.deliveryInfo.pDish = pasta;
-        else
+            auxArray.deliveryInfo.total += 5.55;
+        break;
+
+        case 3:
             auxArray.deliveryInfo.pDish = lasagna;
+            auxArray.deliveryInfo.total += 6.25;
+        break;
+
+        default:
+            cout <<"Opcion no valida!\n";
+        break;
+
+    }
 
         cout << "1 - Cerveza" << endl;
         cout << "2 - Soda" << endl;
@@ -271,12 +302,27 @@ void addOrder(vector<delivery> &dlist)
         cin >> aux;
         cin.ignore();
 
-        if (aux == 1)
+         switch(aux){
+        case 1:
             auxArray.deliveryInfo.pDrink = beer;
-        else if (aux == 2)
+            auxArray.deliveryInfo.total += 1.99;
+        break;
+
+        case 2:
             auxArray.deliveryInfo.pDrink = soda;
-        else
+            auxArray.deliveryInfo.total += 0.95;
+        break;
+
+        case 3:
             auxArray.deliveryInfo.pDrink = tea;
+            auxArray.deliveryInfo.total += 1.15;
+        break;
+
+        default:
+            cout <<"Opcion no valida!\n";
+        break;
+
+    }
 
         auxArray.deliveryInfo.idOrder = idOrder++;
 
@@ -292,9 +338,6 @@ void addOrder(vector<delivery> &dlist)
         else
             auxArray.deliveryInfo.pay = cash;
 
-        cout << "Monto: ";
-        cin >> auxArray.deliveryInfo.total;
-        cin.ignore();
         cout << "Telefono: ";
         cin >> auxArray.cellphone;
         cin.ignore();
@@ -339,12 +382,27 @@ void addOrder(vector <houseOrder> &hList)
         cin >> aux;
         cin.ignore();
 
-        if (aux == 1)
+        switch(aux){
+        case 1:
             array.houseInfo.pStarter = garlicBread;
-        else if (aux == 2)
+            array.houseInfo.total = 3.99;
+        break;
+
+        case 2:
             array.houseInfo.pStarter = pizzaRolls;
-        else
+            array.houseInfo.total = 4.99;
+        break;
+
+        case 3:
             array.houseInfo.pStarter = cheeseSticks;
+            array.houseInfo.total = 3.75;
+        break;
+
+        default:
+            cout<<"Opcion no valida!\n";
+        break;
+
+        }
 
         cout << "1 - Pizza" << endl;
         cout << "2 - Pasta" << endl;
@@ -352,13 +410,28 @@ void addOrder(vector <houseOrder> &hList)
         cout << "Su opción:\t";
         cin >> aux;
         cin.ignore();
-
-        if (aux == 1)
+        switch(aux)
+            {
+        case 1:
             array.houseInfo.pDish = pizza;
-        else if (aux == 2)
+            array.houseInfo.total += 13.99;
+        break;
+
+        case 2:
             array.houseInfo.pDish = pasta;
-        else
+            array.houseInfo.total += 5.55;
+        break;
+
+        case 3:
             array.houseInfo.pDish = lasagna;
+            array.houseInfo.total += 6.25;
+        break;
+
+        default:
+            cout <<"Opcion no valida!\n";
+        break;
+
+    }
 
         cout << "1 - Cerveza" << endl;
         cout << "2 - Soda" << endl;
@@ -367,12 +440,27 @@ void addOrder(vector <houseOrder> &hList)
         cin >> aux;
         cin.ignore();
 
-        if (aux == 1)
+         switch(aux){
+        case 1:
             array.houseInfo.pDrink = beer;
-        else if (aux == 2)
+            array.houseInfo.total += 1.99;
+        break;
+
+        case 2:
             array.houseInfo.pDrink = soda;
-        else
+            array.houseInfo.total += 0.95;
+        break;
+
+        case 3:
             array.houseInfo.pDrink = tea;
+            array.houseInfo.total += 1.15;
+        break;
+
+        default:
+            cout <<"Opcion no valida!\n";
+        break;
+
+    }
 
         array.houseInfo.idOrder = idOrder++;
 
@@ -387,10 +475,6 @@ void addOrder(vector <houseOrder> &hList)
             array.houseInfo.pay = card;
         else
             array.houseInfo.pay = cash;
-
-        cout << "Monto: ";
-        cin >> array.houseInfo.total;
-        cin.ignore();
 
         hList.push_back(array);
         
@@ -451,6 +535,7 @@ void checkOrders(vector<delivery> dList){
     else{
         delivery myArray = dList.front();
         cout << "\nId de orden:\t" <<myArray.deliveryInfo.idOrder << endl;
+        cout << "Su total es:\t"<< myArray.deliveryInfo.total << endl;
         /*cout << "Entrada:\t" << myArray.deliveryInfo.pStarter << endl;
         cout <<"Plato fuerte:\t"<<myArray.deliveryInfo.pDish << endl;
         cout <<"Bebida:\t" << myArray.deliveryInfo.pDrink << endl;*/
@@ -504,3 +589,5 @@ void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist)
             dispatchOrders(meuList, servedlist);
         }
 }
+
+void 
