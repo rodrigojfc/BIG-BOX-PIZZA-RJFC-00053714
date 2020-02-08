@@ -183,17 +183,17 @@ bool loginUser()
 {
     string enterPasword = "";
     char option;
-    cout << "INICIO DE SESION" << endl;
-    cout << "A - Administrador " << endl;
-    cout << "E - Empĺeado" << endl;
-    cout << "Su opción:\t";
+    cout << "\n\t***INICIO DE SESION***\n" << endl;
+    cout << "\tA - Administrador " << endl;
+    cout << "\tE - Empĺeado" << endl;
+    cout << "\tSu opción:\t";
     cin >> option;
 
     switch (option)
     {
     case 'a':
     case 'A':
-        cout << "Digite contraseña: ";
+        cout << "\n\tDigite contraseña: ";
         cin >> enterPasword;
         if (enterPasword.compare(PASSWORD) == 0)
         {
@@ -202,7 +202,7 @@ bool loginUser()
         }
         else
         {
-            cout << "Contraseña incorrecta" << endl;
+            cout << "\n\t***Contraseña incorrecta***\n" << endl;
         }
         break;
     case 'e':
@@ -216,7 +216,7 @@ bool loginUser()
 
 void printMenu(void)
 {
-    cout << "\n\nSISTEMA DE DESPACHO PIZZERIA BIG BOX PIZZA" << endl;
+    cout << "\n\n\t***SISTEMA DE DESPACHO PIZZERIA BIG BOX PIZZA***\n" << endl;
     cout << "1. Agregar ordenes a domicilio" << endl;
     cout << "2. Agregar ordenes a restaurante" << endl;
     cout << "3. Ver ordenes a domicilio" << endl;
@@ -529,14 +529,52 @@ void checkOrders(vector<delivery> dList){
     vector<delivery> auxList;
     
     if (dList.empty())
-        cout <<"\nNo hay ordenes!";
+        return;
     else{
-        delivery myArray = dList.front();
+        delivery myArray = dList.back();
+        cout <<"\nNombre del cliente:\t" << myArray.deliveryInfo.name << endl;
         cout << "\nId de orden:\t" <<myArray.deliveryInfo.idOrder << endl;
-        cout << "Su total es:\t"<< myArray.deliveryInfo.total << endl;
-        /*cout << "Entrada:\t" << myArray.deliveryInfo.pStarter << endl;
-        cout <<"Plato fuerte:\t"<<myArray.deliveryInfo.pDish << endl;
-        cout <<"Bebida:\t" << myArray.deliveryInfo.pDrink << endl;*/
+      
+        switch(myArray.deliveryInfo.pStarter){
+            case cheeseSticks:
+                cout << "Entrada:\tPalitos de queso"<<endl;
+            break;
+            case garlicBread:
+                cout << "Entrada:\tPan con ajo"<< endl;
+            break;
+            case pizzaRolls:
+                cout << "Entrada:\tPizza rolls"<<endl;
+            break;
+        }
+
+            switch(myArray.deliveryInfo.pDish){
+            case pizza:
+                cout << "Plato fuerte:\tPizza"<<endl;
+            break;
+            case lasagna:
+                cout << "Plato fuerte:\tLasagna"<< endl;
+            break;
+            case pasta:
+                cout << "Plato fuerte:\tPasta"<<endl;
+            break;
+        }
+
+        switch(myArray.deliveryInfo.pDrink){
+            case beer:
+                cout << "Bebida:\tCerveza"<<endl;
+            break;
+            case soda:
+                cout << "Bebida:\tSoda"<< endl;
+            break;
+            case tea:
+                cout << "Bebida:\tTe helado"<<endl;
+            break;
+        }
+
+        cout << "El total es:\t$"<< myArray.deliveryInfo.total << endl;
+        cout << "Tiempo de espera:\t" <<floor (myArray.toWait) <<" minutos" << endl;
+
+        
         dList.pop_back();
         checkOrders(dList);
     }
@@ -566,7 +604,7 @@ void checkOrders(vector<houseOrder> hList){
 void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist){
     delivery myArray;
     if (moyList.empty())
-        cout <<"Ordenes despachadas";
+        return;
     else{
         delivery myArray = moyList.back();
         dispatchedlist.push_back(myArray);
@@ -578,15 +616,15 @@ void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist)
 }
 
 //Funcion para despachar ordenes a restaurante
-void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist){
+void dispatchOrders(vector<houseOrder> &myList, vector<houseOrder> &servedlist){
     houseOrder myArray;
-        if (meuList.empty())
-            cout <<"Ordenes despachadas!\n";
+        if (myList.empty())
+            return;
         else{
-            houseOrder myArray = meuList.back();
+            houseOrder myArray = myList.back();
             servedlist.push_back(myArray);
-            meuList.pop_back();
-            dispatchOrders(meuList, servedlist);
+            myList.pop_back();
+            dispatchOrders(myList, servedlist);
         }
 }
 
@@ -666,21 +704,30 @@ void totalSale(vector<delivery> myList1, vector<houseOrder> myList2, float total
 void deleteOrder(vector<delivery> &dList, int option, int aux, string auxString)
 {
     if(dList.empty())
-        cout <<"No hay ordenes para borrar\n";
+        cout <<"\n\t***No hay ordenes para borrar***\n";
     else{
-        if(option == 1)
+        if(option == 1){
             dList.pop_back();
+            cout <<"\n\t***Ultima orden Borrada***\n";
+        }
         else if(option == 2){
             for (auto iter = dList.begin(); iter != dList.end(); iter++){
-                if(iter->deliveryInfo.idOrder == aux)
+                if(aux == iter->deliveryInfo.idOrder){
                     dList.erase(iter);
-                    return;          
+                    cout <<"\n\t***Orden Borrada***\n";
+                }
+                else
+                    iter++;
             }            
         }
         else{
             for (auto iter = dList.begin(); iter != dList.end(); iter++){
-                if(iter->deliveryInfo.name.compare(auxString))
+                if(iter->deliveryInfo.name.compare(auxString)){ 
                     dList.erase(iter);
+                    cout <<"\n\t***Orden Borrada***\n";
+                }
+                else
+                    iter++;       
             }
         }
         }
@@ -690,31 +737,38 @@ void deleteOrder(vector<delivery> &dList, int option, int aux, string auxString)
 void deleteOrder(vector<houseOrder> &hList, int option, int aux, string auxString)
 {
     if(hList.empty())
-        cout <<"No hay ordenes para borrar\n";
+        cout <<"\n\t***No hay ordenes para borrar***\n";
     else{
         if(option == 1)
             hList.pop_back();
         else if(option == 2){
             for (auto iter = hList.begin(); iter != hList.end(); iter++){
-                if(iter->houseInfo.idOrder == aux)
+                if(aux == iter->houseInfo.idOrder){
                     hList.erase(iter);
-                    return;          
+                    cout <<"\n\t***Orden borrada***\n";
+                }
+                else
+                    iter++;
             }            
         }
         else{
             for (auto iter = hList.begin(); iter != hList.end(); iter++){
-                if(iter->houseInfo.name.compare(auxString))
+                if(iter->houseInfo.name.compare(auxString)){
                     hList.erase(iter);
+                    cout <<"***\n\tOrden borrada***\n";
+                }
+                else
+                    iter++;
             }
         }
         }
 
-}
+} 
 
 
 //funcion menu para borrar ordenes
 void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList){
-        //variabled para guardar informacion del pedido a eliminar
+        //variables para guardar informacion del pedido a eliminar
        int Deletechoice = 0;
        int selection = 0;
        string nameDelete = "";
@@ -769,18 +823,16 @@ void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList){
                         cout <<"\nIngrese nombre de cliente para borrar orden:\t"; getline(cin, nameDelete);
                         cin.ignore();
                         deleteOrder(hList, 3, 0, nameDelete);
+                        }
                 break;
                 case 0:
-                Deletechoice = 0;
+                    Deletechoice = 0;
                 break;
                 default:
                     cout <<"\n\t***Seleccione una opcion valida***\n\n";
                 break;
             }
-            }
 
      }while(Deletechoice != 0);
-     
-
      }
 }
