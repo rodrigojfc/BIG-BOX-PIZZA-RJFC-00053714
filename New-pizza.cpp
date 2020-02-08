@@ -1,7 +1,7 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cmath>
+#include <iostream> // input & output
+#include <string> //String types
+#include <vector> //listas
+#include <cmath> //floor function
 #define PASSWORD "fstream" // DECLARACION DEFINE
 using namespace std;
 
@@ -85,9 +85,9 @@ void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist)
 void waitingtime(vector<delivery> myList, float myTime);
 void waitingtime(vector<houseOrder> myList, float myTime);
 void totalSale(vector<delivery> myList1, vector<houseOrder> myList2, float total);
-void deleteOrder(vector<delivery> &dList, int option, int aux);
+void deleteOrder(vector<delivery> &dList, int option, int aux, string auxString);
 void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList);
-void deleteOrder(vector<houseOrder> &hList, int option, int aux);
+void deleteOrder(vector<houseOrder> &hList, int option, int aux, string auxString);
 
 
 
@@ -663,49 +663,63 @@ void totalSale(vector<delivery> myList1, vector<houseOrder> myList2, float total
         }
 }
 
-void deleteOrder(vector<delivery> &dList, int option, int aux)
+void deleteOrder(vector<delivery> &dList, int option, int aux, string auxString)
 {
     if(dList.empty())
         cout <<"No hay ordenes para borrar\n";
     else{
         if(option == 1)
             dList.pop_back();
+        else if(option == 2){
+            for (auto iter = dList.begin(); iter != dList.end(); iter++){
+                if(iter->deliveryInfo.idOrder == aux)
+                    dList.erase(iter);
+                    return;          
+            }            
+        }
         else{
-            delivery array = dList.back();
-            if(array.deliveryInfo.idOrder == aux){
-                dList.pop_back();
+            for (auto iter = dList.begin(); iter != dList.end(); iter++){
+                if(iter->deliveryInfo.name.compare(auxString))
+                    dList.erase(iter);
             }
-            else
-                deleteOrder(dList, option, aux);
         }
         }
 
 }
 
-void deleteOrder(vector<houseOrder> &hList, int option, int aux)
+void deleteOrder(vector<houseOrder> &hList, int option, int aux, string auxString)
 {
     if(hList.empty())
         cout <<"No hay ordenes para borrar\n";
     else{
         if(option == 1)
             hList.pop_back();
+        else if(option == 2){
+            for (auto iter = hList.begin(); iter != hList.end(); iter++){
+                if(iter->houseInfo.idOrder == aux)
+                    hList.erase(iter);
+                    return;          
+            }            
+        }
         else{
-            houseOrder array = hList.back();
-            if(array.houseInfo.idOrder == aux){
-                hList.pop_back();
+            for (auto iter = hList.begin(); iter != hList.end(); iter++){
+                if(iter->houseInfo.name.compare(auxString))
+                    hList.erase(iter);
             }
-            else
-                deleteOrder(hList, option, aux);
         }
         }
 
 }
 
 
-
+//funcion menu para borrar ordenes
 void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList){
+        //variabled para guardar informacion del pedido a eliminar
        int Deletechoice = 0;
        int selection = 0;
+       string nameDelete = "";
+       
+       //se revisa que el usuario que intenta borrar la orden sea administrador
      if(isAdmin == false){
         cout <<"\n***Se necesita ser administrador para borrar ordenes!***\n";
         cout <<"\n\tCambiando usuario...\n\n";
@@ -722,30 +736,39 @@ void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList){
 
             switch(Deletechoice){
                 case 1:
-                    cout <<"1. Borrar ultima orden\n";
+                    cout <<"\n\n1. Borrar ultima orden\n";
                     cout <<"2. Borrar por ID de orden\n";
+                    cout <<"3. Borrar por nombre\n";
                     cout <<"Opcion:\t"; cin >> selection; cin.ignore();
                     if(selection == 1)
-                        deleteOrder(dList, 1, 0);
+                        deleteOrder(dList, 1, 0, " ");
+                    else if(selection == 2){
+                        cout <<"\nIngrese ID de orden a buscar:\t"; cin >> selection; cin.ignore(); 
+                        deleteOrder(dList, 2, selection, " ");
+                    }
                     else
                     {      
-                        cout <<"Ingrese ID de orden a borrar:\t"; cin >> selection;
+                        cout <<"\nIngrese nombre de cliente para borrar orden:\t"; getline(cin, nameDelete);
                         cin.ignore();
-                        deleteOrder(dList, 2, selection);
+                        deleteOrder(dList, 3, 0, nameDelete);
                     }
                 break;
                 case 2:
-                    cout <<"1. Borrar ultima orden\n";
+                    cout <<"\n\n1. Borrar ultima orden\n";
                     cout <<"2. Borrar por ID de orden\n";
+                    cout <<"3. Borrar por nombre\n";
                     cout <<"Opcion:\t"; cin >> selection; cin.ignore();
                     if(selection == 1)
-                        deleteOrder(hList, 1, 0);
+                        deleteOrder(hList, 1, 0, " ");
+                    else if(selection == 2){
+                        cout <<"\nIngrese ID de orden a buscar:\t"; cin >> selection; cin.ignore(); 
+                        deleteOrder(hList, 2, selection, " ");
+                    }
                     else
                     {      
-                        cout <<"Ingrese ID de orden a borrar:\t"; cin >> selection;
+                        cout <<"\nIngrese nombre de cliente para borrar orden:\t"; getline(cin, nameDelete);
                         cin.ignore();
-                        deleteOrder(hList, 2, selection);
-                    }
+                        deleteOrder(hList, 3, 0, nameDelete);
                 break;
                 case 0:
                 Deletechoice = 0;
@@ -754,7 +777,10 @@ void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList){
                     cout <<"\n\t***Seleccione una opcion valida***\n\n";
                 break;
             }
+            }
 
      }while(Deletechoice != 0);
+     
+
      }
 }
