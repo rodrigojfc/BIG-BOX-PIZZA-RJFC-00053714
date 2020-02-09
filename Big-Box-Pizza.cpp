@@ -362,7 +362,7 @@ void addOrder(vector<delivery> &dlist)
         if(dlist.empty())
             auxArray.toWait = (1 * 1.35 + 1 * 1.10 + 1 * 1.5) + 15;
         else
-            auxArray.toWait = (dlist.size() + 1) * ((1 * 1.35 + 1 * 1.10 + 1 * 1.5) + 15);
+            auxArray.toWait = (dlist.size() + 2) * ((1 * 1.35 + 1 * 1.10 + 1 * 1.5) + 15);
         
 
         cout << "Tipo de pago" << endl;
@@ -709,8 +709,8 @@ void waitingtime(vector<delivery> myList, float myTime)
             return;
         }
         else{
-        cout <<"El tiempo total de espera es:\t" << floor (myTime) << endl;
-        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+1))<< endl;
+        cout <<"El tiempo total de espera es:\t" << floor (myTime) << " minutos"<< endl;
+        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+2))<< " minutos"<< endl;
         }
     }
         
@@ -734,8 +734,8 @@ void waitingtime(vector<houseOrder> myList, float myTime)
             return;
         }
         else{
-        cout <<"El tiempo total de espera es:\t" << floor (myTime) << endl;
-        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+1))<< endl;
+        cout <<"El tiempo total de espera es:\t" << floor (myTime) << " minutos"<< endl;
+        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+2))<< " minutos" <<endl;
         }
     }
         
