@@ -42,6 +42,7 @@ struct address
     int houseNumber;
 };
 
+
 struct mainInfo
 {
     string name;
@@ -51,6 +52,7 @@ struct mainInfo
     paymentType pay;
     int idOrder;
     float total;
+    int howMuch;
 };
 
 struct delivery
@@ -80,14 +82,17 @@ void addOrder(vector<delivery> &dlist);
 void addOrder(vector <houseOrder> &hList);
 void checkOrders(vector<delivery> dList);
 void checkOrders(vector<houseOrder> hList);
-void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist);
-void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist);
+void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist, int aux);
+void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist, int aux);
 void waitingtime(vector<delivery> myList, float myTime);
 void waitingtime(vector<houseOrder> myList, float myTime);
-void totalSale(vector<delivery> myList1, vector<houseOrder> myList2, float total);
+float totalSale(vector<delivery> myList1, int total);
+float totalSale(vector<houseOrder> myList1, int total);
 void deleteOrder(vector<delivery> &dList, int option, int aux, string auxString);
 void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList);
 void deleteOrder(vector<houseOrder> &hList, int option, int aux, string auxString);
+void dispatchMenu(vector<delivery> &myList, vector<delivery> &dmyList);
+void dispatchMenu(vector<houseOrder> &myList, vector<houseOrder> &dmyList);
 
 
 
@@ -100,7 +105,7 @@ int main(void)
     vector<houseOrder> hList;
     vector<delivery>  dispatchedList;
     vector<houseOrder> servedList;
-    float totalTime = 0;
+    float totalTime = 0, totalSales = 0;
 
 
     //Verificacion para iniciar sesion
@@ -134,12 +139,12 @@ int main(void)
             break;
         case 5:
             //despachar ordenes a domicilio
-            dispatchOrders(dList, dispatchedList);
+            dispatchMenu(dList, dispatchedList);
         break;
 
         case 6:
             //despachar ordenes en restaurante
-            dispatchOrders(hList, servedList);
+            dispatchMenu(hList, servedList);
         break;
 
         case 7:
@@ -159,7 +164,8 @@ int main(void)
 
         case 10:
             //Calcular total de ventas
-            totalSale(dispatchedList, servedList, totalTime);
+            totalSales = totalSale(dispatchedList, totalTime) + totalSale(servedList, totalTime);
+            cout <<"\n\tTotal de ventas es:\t$" << totalSales << endl; 
 
         break;
 
@@ -528,8 +534,10 @@ void checkOrders(vector<delivery> dList){
 
     vector<delivery> auxList;
     
-    if (dList.empty())
+    if (dList.empty()){
+        cout<<"\n\t***No hay ordenes***\n";
         return;
+    }
     else{
         delivery myArray = dList.back();
         cout <<"\nNombre del cliente:\t" << myArray.deliveryInfo.name << endl;
@@ -587,13 +595,52 @@ void checkOrders(vector<houseOrder> hList){
       vector<houseOrder> auxList;
     
     if (hList.empty())
-        cout <<"\nNo hay ordenes!";
+        cout <<"\n\t***No hay ordenes!***";
     else{
         houseOrder myArray = hList.back();
+        cout <<"\nNombre del cliente:\t" << myArray.houseInfo.name << endl;
         cout << "\nId de orden:\t" <<myArray.houseInfo.idOrder << endl;
-        /*cout << "Entrada:\t" << myArray.houseInfo.pStarter << endl;
-        cout <<"Plato fuerte:\t"<<myArray.houseInfo.pDish << endl;
-        cout <<"Bebida:\t" << myArray.houseInfo.pDrink << endl;*/
+      
+        switch(myArray.houseInfo.pStarter){
+            case cheeseSticks:
+                cout << "Entrada:\tPalitos de queso"<<endl;
+            break;
+            case garlicBread:
+                cout << "Entrada:\tPan con ajo"<< endl;
+            break;
+            case pizzaRolls:
+                cout << "Entrada:\tPizza rolls"<<endl;
+            break;
+        }
+
+            switch(myArray.houseInfo.pDish){
+            case pizza:
+                cout << "Plato fuerte:\tPizza"<<endl;
+            break;
+            case lasagna:
+                cout << "Plato fuerte:\tLasagna"<< endl;
+            break;
+            case pasta:
+                cout << "Plato fuerte:\tPasta"<<endl;
+            break;
+        }
+
+        switch(myArray.houseInfo.pDrink){
+            case beer:
+                cout << "Bebida:\tCerveza"<<endl;
+            break;
+            case soda:
+                cout << "Bebida:\tSoda"<< endl;
+            break;
+            case tea:
+                cout << "Bebida:\tTe helado"<<endl;
+            break;
+        }
+
+        cout << "El total es:\t$"<< myArray.houseInfo.total << endl;
+        cout << "Tiempo de espera:\t" <<floor (myArray.toWait) <<" minutos" << endl;
+
+        
         hList.pop_back();
         checkOrders(hList);
     }
@@ -601,30 +648,44 @@ void checkOrders(vector<houseOrder> hList){
 }
 
 //Funcion para despachar ordenes a domicilio
-void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist){
-    delivery myArray;
+void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist, int aux){
     if (moyList.empty())
         return;
     else{
+        if(aux == 1){
         delivery myArray = moyList.back();
         dispatchedlist.push_back(myArray);
         moyList.pop_back();
-        dispatchOrders(moyList, dispatchedlist);
-
+        dispatchOrders(moyList, dispatchedlist, aux);
+        }
+        else
+        {
+            delivery myArray = moyList.back();
+            dispatchedlist.push_back(myArray);
+            moyList.pop_back();
+            cout<<"\n\t***Orden despachada***";
+        }
     }
 
 }
 
 //Funcion para despachar ordenes a restaurante
-void dispatchOrders(vector<houseOrder> &myList, vector<houseOrder> &servedlist){
-    houseOrder myArray;
+void dispatchOrders(vector<houseOrder> &myList, vector<houseOrder> &servedlist, int aux){
         if (myList.empty())
             return;
         else{
+            if(aux == 1){
             houseOrder myArray = myList.back();
             servedlist.push_back(myArray);
             myList.pop_back();
-            dispatchOrders(myList, servedlist);
+            dispatchOrders(myList, servedlist, aux);
+            }
+            else{
+                houseOrder myArray = myList.back();
+                servedlist.push_back(myArray);
+                myList.pop_back();
+                cout <<"\n\t***Orden despachada***\n";
+            }
         }
 }
 
@@ -678,29 +739,44 @@ void waitingtime(vector<houseOrder> myList, float myTime)
     }
 }
 
-
 //calcular total de ventas en el dia
-void totalSale(vector<delivery> myList1, vector<houseOrder> myList2, float total)
+float totalSale(vector<delivery> myList1, int total)
 {
 
-     if(myList1.empty() && myList2.empty()){
+     if(myList1.empty()){
          if (total <= 0)
-            cout <<"No hay ventas!\n";
-        else{
-            cout <<"El total de ventas es:\t" << (total * 0.13) + total << endl;
+            return 0;
+        else{ 
+            return (total * 0.13) + total;
         }
      }
      else{
          delivery array1 = myList1.back();
-         houseOrder array2 = myList2.back();
 
-         total = total + array1.deliveryInfo.total + array2.houseInfo.total;
-         myList2.pop_back();
+         total = total + array1.deliveryInfo.total;
          myList1.pop_back();
-         totalSale(myList1, myList2, total);
+         totalSale(myList1, total);
         }
 }
 
+float totalSale(vector<houseOrder> myList1, int total){
+      if(myList1.empty()){
+         if (total <= 0)
+            return total;
+        else{ 
+            return (total * 0.13) + total;
+        }
+     }
+     else{
+         houseOrder array1 = myList1.back();
+
+         total = total + array1.houseInfo.total;
+         myList1.pop_back();
+         totalSale(myList1, total);
+        }
+}
+
+//funcion para borrar ordenes a domicilio
 void deleteOrder(vector<delivery> &dList, int option, int aux, string auxString)
 {
     if(dList.empty())
@@ -734,6 +810,7 @@ void deleteOrder(vector<delivery> &dList, int option, int aux, string auxString)
 
 }
 
+//funcion para borrar ordenes en restaurantes
 void deleteOrder(vector<houseOrder> &hList, int option, int aux, string auxString)
 {
     if(hList.empty())
@@ -835,4 +912,48 @@ void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList){
 
      }while(Deletechoice != 0);
      }
+}
+
+void dispatchMenu(vector<delivery> &myList, vector<delivery> &dmyList){
+    int decision = 0;
+    
+    cout <<"\n1. Despachar todas las ordenes\n";
+    cout <<"2. Despachar ultima orden\n";
+    cout <<"Su opcion:\t"; cin >> decision; cin.ignore();
+
+    switch(decision){
+        case 1:
+            dispatchOrders(myList, dmyList, decision);
+        break;
+
+        case 2:
+            dispatchOrders(myList, dmyList, decision);
+        break;
+        default:
+            cout<<"\n\t***Opcion no valida***";
+        break;
+
+    }
+}
+
+void dispatchMenu(vector<houseOrder> &myList, vector<houseOrder> &dmyList){
+    int decision = 0;
+    
+    cout <<"\n1. Despachar todas las ordenes\n";
+    cout <<"2. Despachar ultima orden\n";
+    cout <<"Su opcion:\t"; cin >> decision; cin.ignore();
+
+    switch(decision){
+        case 1:
+            dispatchOrders(myList, dmyList, decision);
+        break;
+
+        case 2:
+            dispatchOrders(myList, dmyList, decision);
+        break;
+        default:
+            cout<<"\n\t***Opcion no valida***";
+        break;
+
+    }
 }
