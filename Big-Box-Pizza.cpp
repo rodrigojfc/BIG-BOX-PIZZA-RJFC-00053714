@@ -762,7 +762,7 @@ float totalSale(vector<delivery> myList1, int total)
 float totalSale(vector<houseOrder> myList1, int total){
       if(myList1.empty()){
          if (total <= 0)
-            return total;
+            return 0;
         else{ 
             return (total * 0.13) + total;
         }
