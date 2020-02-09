@@ -170,6 +170,7 @@ int main(void)
         break;
 
         case 11:
+            //Cambiar de usario
             loginUser();
         break;
 
@@ -185,6 +186,8 @@ int main(void)
     return 0;
 }
 
+
+//funcion que cambia el usuario para poder borrar ordenes
 bool loginUser()
 {
     string enterPasword = "";
@@ -531,9 +534,7 @@ void addOrder(vector <houseOrder> &hList)
 
 //Funcion recursiva para ver ordenes a domicilio 
 void checkOrders(vector<delivery> dList){
-
-    vector<delivery> auxList;
-    
+    //Revisa si la orden esta vacia como condicion de salida    
     if (dList.empty()){
         cout<<"\n\t***No hay ordenes***\n";
         return;
@@ -591,9 +592,7 @@ void checkOrders(vector<delivery> dList){
 
 //Funcion recursiva para ver ordenes en restaurante
 void checkOrders(vector<houseOrder> hList){
-
-      vector<houseOrder> auxList;
-    
+    //Revisa si la orden esta vacia como condicion de salida    
     if (hList.empty())
         cout <<"\n\t***No hay ordenes!***";
     else{
@@ -649,9 +648,15 @@ void checkOrders(vector<houseOrder> hList){
 
 //Funcion para despachar ordenes a domicilio
 void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist, int aux){
-    if (moyList.empty())
+
+    //Condicion de salida
+    if (moyList.empty()){
+        cout<<"\n\t***No hay ordenes***\n";
         return;
+    }
+
     else{
+        //Se despachan todas las ordenes recursivamente
         if(aux == 1){
         delivery myArray = moyList.back();
         dispatchedlist.push_back(myArray);
@@ -660,6 +665,7 @@ void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist,
         }
         else
         {
+            //se depacha la ultima orden
             delivery myArray = moyList.back();
             dispatchedlist.push_back(myArray);
             moyList.pop_back();
@@ -671,16 +677,20 @@ void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist,
 
 //Funcion para despachar ordenes a restaurante
 void dispatchOrders(vector<houseOrder> &myList, vector<houseOrder> &servedlist, int aux){
-        if (myList.empty())
-            return;
+        if (myList.empty()){
+        cout<<"\n\t***No hay ordenes***\n";
+        return;
+        }
         else{
             if(aux == 1){
+            //Se despachan todas las ordenes recursivamente
             houseOrder myArray = myList.back();
             servedlist.push_back(myArray);
             myList.pop_back();
             dispatchOrders(myList, servedlist, aux);
             }
             else{
+                //se depacha la ultima orden
                 houseOrder myArray = myList.back();
                 servedlist.push_back(myArray);
                 myList.pop_back();
@@ -739,7 +749,7 @@ void waitingtime(vector<houseOrder> myList, float myTime)
     }
 }
 
-//calcular total de ventas en el dia
+//calcular total de ventas en el dia en la lista de domicilio
 float totalSale(vector<delivery> myList1, int total)
 {
 
@@ -751,6 +761,7 @@ float totalSale(vector<delivery> myList1, int total)
         }
      }
      else{
+        // estructura para guardar informacion en la lista
          delivery array1 = myList1.back();
 
          total = total + array1.deliveryInfo.total;
@@ -758,7 +769,7 @@ float totalSale(vector<delivery> myList1, int total)
          totalSale(myList1, total);
         }
 }
-
+//calcular total de ventas en el dia en la lista de domicilio
 float totalSale(vector<houseOrder> myList1, int total){
       if(myList1.empty()){
          if (total <= 0)
@@ -768,6 +779,7 @@ float totalSale(vector<houseOrder> myList1, int total){
         }
      }
      else{
+          // estructura para guardar informacion en la lista
          houseOrder array1 = myList1.back();
 
          total = total + array1.houseInfo.total;
