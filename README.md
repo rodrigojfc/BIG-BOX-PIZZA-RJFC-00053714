@@ -470,26 +470,28 @@
     <p>
         <em>¿Qué aprendí con la realización de este proyecto?</em>
         <br>
-        <small>XXXXXXXXXXX</small>
+        <small>Convertir una situacion real a código.</small>
+        <small>Sistematizar la escritura de código.</small>
     </p>
     <p>
         <em>¿Qué fue lo más difícil de implementar?</em>
         <br>
-        <small>XXXXXXXXXXX</small>
+        <small>Trabajar con estructuras y acceder a sus valores.</small>
+        <small>Implementar recursion para ciertas funciones.</small>
     </p>
     <p>
         <em>¿Qué fue lo más fácil de implementar?</em>
         <br>
-        <small>XXXXXXXXXXX</small>
+        <small>Busqueda de elementos dentro de una lista al momento de eliminar una orden.</small>
     </p>
     <p>
         <em>¿Qué cambiaría en el desempeño del catedrático?</em>
         <br>
-        <small>XXXXXXXXXXX</small>
+        <small>La metodología del catedrático me parecio adecuada, se brindaron ejemplos acordes a lo evaluado.</small>
     </p>
     <p>
         <em>¿Qué cambiaría en el desempeño del instructor?</em>
         <br>
-        <small>XXXXXXXXXXX</small>
+        <small>Explicar los temas más despacio al momento de desarrollar los ejemplos en laboratorio.</small>
     </p>
 </dl>
