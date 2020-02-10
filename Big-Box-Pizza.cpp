@@ -789,7 +789,7 @@ float totalSale(vector<delivery> myList1, float total)
 
          total = total + array1.deliveryInfo.total;
          myList1.pop_back();
-         totalSale(myList1, total);
+         return totalSale(myList1, total);
         }
 }
 //calcular total de ventas en el dia en la lista de domicilio
@@ -807,8 +807,9 @@ float totalSale(vector<houseOrder> myList1, float total){
 
          total = total + array1.houseInfo.total;
          myList1.pop_back();
-         totalSale(myList1, total);
+         return totalSale(myList1, total);
         }
+        
 }
 
 //funcion para borrar ordenes a domicilio
