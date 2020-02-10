@@ -2,6 +2,7 @@
 #include <string> //String types
 #include <vector> //listas
 #include <cmath> //floor function
+#include <iomanip>      // std::setprecision
 #define PASSWORD "fstream" // DECLARACION DEFINE
 using namespace std;
 
@@ -52,7 +53,7 @@ struct mainInfo
     paymentType pay;
     int idOrder;
     float total;
-    int howMuch;
+    int howMuchStarter, howMuchMain, howMuchDrink;
 };
 
 struct delivery
@@ -86,8 +87,8 @@ void dispatchOrders(vector<delivery> &moyList, vector<delivery> &dispatchedlist,
 void dispatchOrders(vector<houseOrder> &meuList, vector<houseOrder> &servedlist, int aux);
 void waitingtime(vector<delivery> myList, float myTime);
 void waitingtime(vector<houseOrder> myList, float myTime);
-float totalSale(vector<delivery> myList1, int total);
-float totalSale(vector<houseOrder> myList1, int total);
+float totalSale(vector<delivery> myList1, float total);
+float totalSale(vector<houseOrder> myList1, float total);
 void deleteOrder(vector<delivery> &dList, int option, int aux, string auxString);
 void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList);
 void deleteOrder(vector<houseOrder> &hList, int option, int aux, string auxString);
@@ -164,8 +165,8 @@ int main(void)
 
         case 10:
             //Calcular total de ventas
-            totalSales = totalSale(dispatchedList, totalTime) + totalSale(servedList, totalTime);
-            cout <<"\n\tTotal de ventas es:\t$" << totalSales << endl; 
+            totalSales = totalSale(dispatchedList, 0) + totalSale(servedList, 0);
+            cout <<"\n\tTotal de ventas es:\t$" << setprecision(4) << totalSales  << endl; 
 
         break;
 
@@ -247,6 +248,7 @@ void addOrder(vector<delivery> &dlist)
 {
     delivery auxArray;
     int aux = 0, choice = 0;
+
     
     do{
         cout << "\n1- Ingresar nuevo pedido\n";
@@ -269,7 +271,8 @@ void addOrder(vector<delivery> &dlist)
         cin >> auxArray.deliveryAddress.houseNumber;
         cin.ignore();
 
-        cout << "1 - Pan con ajo" << endl;
+        
+        cout << "\n1 - Pan con ajo" << endl;
         cout << "2 - Pizza rolls" << endl;
         cout << "3 - Palitos de queso" << endl;
         cout << "Su opción:\t";
@@ -279,17 +282,20 @@ void addOrder(vector<delivery> &dlist)
     switch(aux){
         case 1:
             auxArray.deliveryInfo.pStarter = garlicBread;
-            auxArray.deliveryInfo.total = 3.99;
+            cout <<"Ingrese cantidad de entradas:\t"; cin >> auxArray.deliveryInfo.howMuchStarter; cin.ignore();
+            auxArray.deliveryInfo.total = (3.99 * auxArray.deliveryInfo.howMuchStarter);
         break;
 
         case 2:
             auxArray.deliveryInfo.pStarter = pizzaRolls;
-            auxArray.deliveryInfo.total = 4.99;
+            cout <<"Ingrese cantidad de entradas:\t"; cin >> auxArray.deliveryInfo.howMuchStarter; cin.ignore();
+            auxArray.deliveryInfo.total = (4.99 * auxArray.deliveryInfo.howMuchStarter);
         break;
 
         case 3:
             auxArray.deliveryInfo.pStarter = cheeseSticks;
-            auxArray.deliveryInfo.total = 3.75;
+            cout <<"Ingrese cantidad de entradas:\t"; cin >> auxArray.deliveryInfo.howMuchStarter; cin.ignore();
+            auxArray.deliveryInfo.total = (3.75 * auxArray.deliveryInfo.howMuchStarter);
         break;
 
         default:
@@ -298,7 +304,7 @@ void addOrder(vector<delivery> &dlist)
 
     }
 
-        cout << "1 - Pizza" << endl;
+        cout << "\n1 - Pizza" << endl;
         cout << "2 - Pasta" << endl;
         cout << "3 - Lasagna" << endl;
         cout << "Su opción:\t";
@@ -309,17 +315,20 @@ void addOrder(vector<delivery> &dlist)
             {
         case 1:
             auxArray.deliveryInfo.pDish = pizza;
-            auxArray.deliveryInfo.total += 13.99;
+            cout <<"Ingrese cantidad de platos principales:\t"; cin >> auxArray.deliveryInfo.howMuchMain; cin.ignore();
+            auxArray.deliveryInfo.total += (13.99 * auxArray.deliveryInfo.howMuchMain);
         break;
 
         case 2:
             auxArray.deliveryInfo.pDish = pasta;
-            auxArray.deliveryInfo.total += 5.55;
+            cout <<"Ingrese cantidad de platos principales:\t"; cin >> auxArray.deliveryInfo.howMuchMain; cin.ignore();
+            auxArray.deliveryInfo.total += (5.55 * auxArray.deliveryInfo.howMuchMain);
         break;
 
         case 3:
             auxArray.deliveryInfo.pDish = lasagna;
-            auxArray.deliveryInfo.total += 6.25;
+            cout <<"Ingrese cantidad de platos principales:\t"; cin >> auxArray.deliveryInfo.howMuchMain; cin.ignore();
+            auxArray.deliveryInfo.total += (6.25 * auxArray.deliveryInfo.howMuchMain);
         break;
 
         default:
@@ -328,7 +337,7 @@ void addOrder(vector<delivery> &dlist)
 
     }
 
-        cout << "1 - Cerveza" << endl;
+        cout << "\n1 - Cerveza" << endl;
         cout << "2 - Soda" << endl;
         cout << "3 - Te helado" << endl;
         cout << "Su opción:\t";
@@ -338,17 +347,20 @@ void addOrder(vector<delivery> &dlist)
          switch(aux){
         case 1:
             auxArray.deliveryInfo.pDrink = beer;
-            auxArray.deliveryInfo.total += 1.99;
+            cout <<"Ingrese cantidad de bebidas:\t"; cin>>auxArray.deliveryInfo.howMuchDrink; cin.ignore();
+            auxArray.deliveryInfo.total += (1.99 * auxArray.deliveryInfo.howMuchDrink);
         break;
 
         case 2:
             auxArray.deliveryInfo.pDrink = soda;
-            auxArray.deliveryInfo.total += 0.95;
+            cout <<"Ingrese cantidad de bebidas:\t"; cin>>auxArray.deliveryInfo.howMuchDrink; cin.ignore();
+            auxArray.deliveryInfo.total += (0.95 * auxArray.deliveryInfo.howMuchDrink);
         break;
 
         case 3:
             auxArray.deliveryInfo.pDrink = tea;
-            auxArray.deliveryInfo.total += 1.15;
+            cout <<"Ingrese cantidad de bebidas:\t"; cin>>auxArray.deliveryInfo.howMuchDrink; cin.ignore();
+            auxArray.deliveryInfo.total += (1.15 * auxArray.deliveryInfo.howMuchDrink);
         break;
 
         default:
@@ -356,16 +368,15 @@ void addOrder(vector<delivery> &dlist)
         break;
 
     }
-
         auxArray.deliveryInfo.idOrder = idOrder++;
 
         if(dlist.empty())
-            auxArray.toWait = (1 * 1.35 + 1 * 1.10 + 1 * 1.5) + 15;
+            auxArray.toWait = (auxArray.deliveryInfo.howMuchDrink * 1.35 + auxArray.deliveryInfo.howMuchStarter * 1.10 + auxArray.deliveryInfo.howMuchMain * 1.5) + 15;
         else
-            auxArray.toWait = (dlist.size() + 2) * ((1 * 1.35 + 1 * 1.10 + 1 * 1.5) + 15);
+            auxArray.toWait = (dlist.size() + 2) * ((auxArray.deliveryInfo.howMuchDrink * 1.35 + auxArray.deliveryInfo.howMuchStarter * 1.10 + auxArray.deliveryInfo.howMuchMain * 1.5) + 15);
         
 
-        cout << "Tipo de pago" << endl;
+        cout << "\nTipo de pago" << endl;
         cout << "1 - Tarjeta" << endl;
         cout << "2 - Efectivo" << endl;
         cout << "Su opción:\t";
@@ -377,7 +388,7 @@ void addOrder(vector<delivery> &dlist)
         else
             auxArray.deliveryInfo.pay = cash;
 
-        cout << "Telefono: ";
+        cout << "\nTelefono: ";
         cin >> auxArray.cellphone;
         cin.ignore();
 
@@ -398,7 +409,7 @@ void addOrder(vector<delivery> &dlist)
 //funcion para agregar ordenes en restaurante
 void addOrder(vector <houseOrder> &hList)
 {
-    houseOrder array;
+    houseOrder auxArray;
     int aux = 0, choice = 0;
 
     do{ 
@@ -409,61 +420,68 @@ void addOrder(vector <houseOrder> &hList)
 
         if(choice == 1){
         cout << "Nombre:\t";
-        getline(cin, array.houseInfo.name);
+        getline(cin, auxArray.houseInfo.name);
         cout << "Ingrese personas por mesa: ";
-        cin >> array.pTable;
+        cin >> auxArray.pTable;
         cin.ignore();
 
-        cout << "1 - Pan con ajo" << endl;
+        cout << "\n1 - Pan con ajo" << endl;
         cout << "2 - Pizza rolls" << endl;
         cout << "3 - Palitos de queso" << endl;
         cout << "Su opción:\t";
         cin >> aux;
         cin.ignore();
 
-        switch(aux){
+    switch(aux){
         case 1:
-            array.houseInfo.pStarter = garlicBread;
-            array.houseInfo.total = 3.99;
+            auxArray.houseInfo.pStarter = garlicBread;
+            cout <<"Ingrese cantidad de entradas:\t"; cin >> auxArray.houseInfo.howMuchStarter; cin.ignore();
+            auxArray.houseInfo.total = (3.99 * auxArray.houseInfo.howMuchStarter);
         break;
 
         case 2:
-            array.houseInfo.pStarter = pizzaRolls;
-            array.houseInfo.total = 4.99;
+            auxArray.houseInfo.pStarter = pizzaRolls;
+            cout <<"Ingrese cantidad de entradas:\t"; cin >> auxArray.houseInfo.howMuchStarter; cin.ignore();
+            auxArray.houseInfo.total = (4.99 * auxArray.houseInfo.howMuchStarter);
         break;
 
         case 3:
-            array.houseInfo.pStarter = cheeseSticks;
-            array.houseInfo.total = 3.75;
+            auxArray.houseInfo.pStarter = cheeseSticks;
+            cout <<"Ingrese cantidad de entradas:\t"; cin >> auxArray.houseInfo.howMuchStarter; cin.ignore();
+            auxArray.houseInfo.total = (3.75 * auxArray.houseInfo.howMuchStarter);
         break;
 
         default:
             cout<<"Opcion no valida!\n";
         break;
 
-        }
+    }
 
-        cout << "1 - Pizza" << endl;
+        cout << "\n1 - Pizza" << endl;
         cout << "2 - Pasta" << endl;
         cout << "3 - Lasagna" << endl;
         cout << "Su opción:\t";
         cin >> aux;
         cin.ignore();
-        switch(aux)
+
+            switch(aux)
             {
         case 1:
-            array.houseInfo.pDish = pizza;
-            array.houseInfo.total += 13.99;
+            auxArray.houseInfo.pDish = pizza;
+            cout <<"Ingrese cantidad de platos principales:\t"; cin >> auxArray.houseInfo.howMuchMain; cin.ignore();
+            auxArray.houseInfo.total += (13.99 * auxArray.houseInfo.howMuchMain);
         break;
 
         case 2:
-            array.houseInfo.pDish = pasta;
-            array.houseInfo.total += 5.55;
+            auxArray.houseInfo.pDish = pasta;
+            cout <<"Ingrese cantidad de platos principales:\t"; cin >> auxArray.houseInfo.howMuchMain; cin.ignore();
+            auxArray.houseInfo.total += (5.55 * auxArray.houseInfo.howMuchMain);
         break;
 
         case 3:
-            array.houseInfo.pDish = lasagna;
-            array.houseInfo.total += 6.25;
+            auxArray.houseInfo.pDish = lasagna;
+            cout <<"Ingrese cantidad de platos principales:\t"; cin >> auxArray.houseInfo.howMuchMain; cin.ignore();
+            auxArray.houseInfo.total += (6.25 * auxArray.houseInfo.howMuchMain);
         break;
 
         default:
@@ -472,7 +490,7 @@ void addOrder(vector <houseOrder> &hList)
 
     }
 
-        cout << "1 - Cerveza" << endl;
+        cout << "\n1 - Cerveza" << endl;
         cout << "2 - Soda" << endl;
         cout << "3 - Te helado" << endl;
         cout << "Su opción:\t";
@@ -481,18 +499,21 @@ void addOrder(vector <houseOrder> &hList)
 
          switch(aux){
         case 1:
-            array.houseInfo.pDrink = beer;
-            array.houseInfo.total += 1.99;
+            auxArray.houseInfo.pDrink = beer;
+            cout <<"Ingrese cantidad de bebidas:\t"; cin>>auxArray.houseInfo.howMuchDrink; cin.ignore();
+            auxArray.houseInfo.total += (1.99 * auxArray.houseInfo.howMuchDrink);
         break;
 
         case 2:
-            array.houseInfo.pDrink = soda;
-            array.houseInfo.total += 0.95;
+            auxArray.houseInfo.pDrink = soda;
+            cout <<"Ingrese cantidad de bebidas:\t"; cin>>auxArray.houseInfo.howMuchDrink; cin.ignore();
+            auxArray.houseInfo.total += (0.95 * auxArray.houseInfo.howMuchDrink);
         break;
 
         case 3:
-            array.houseInfo.pDrink = tea;
-            array.houseInfo.total += 1.15;
+            auxArray.houseInfo.pDrink = tea;
+            cout <<"Ingrese cantidad de bebidas:\t"; cin>>auxArray.houseInfo.howMuchDrink; cin.ignore();
+            auxArray.houseInfo.total += (1.15 * auxArray.houseInfo.howMuchDrink);
         break;
 
         default:
@@ -500,15 +521,15 @@ void addOrder(vector <houseOrder> &hList)
         break;
 
     }
+        auxArray.houseInfo.idOrder = idOrder++;
 
-        array.houseInfo.idOrder = idOrder++;
-        
-         if(hList.empty())
-            array.toWait = (1 * 1.35 + 1 * 1.10 + 1 * 1.5);
+        if(hList.empty())
+            auxArray.toWait = (auxArray.houseInfo.howMuchDrink * 1.35 + auxArray.houseInfo.howMuchStarter * 1.10 + auxArray.houseInfo.howMuchMain * 1.5);
         else
-            array.toWait = (hList.size() + 1) * (1 * 1.35 + 1 * 1.10 + 1 * 1.5);
+            auxArray.toWait = (hList.size() + 2) * (auxArray.houseInfo.howMuchDrink * 1.35 + auxArray.houseInfo.howMuchStarter * 1.10 + auxArray.houseInfo.howMuchMain * 1.5);
+        
 
-        cout << "Tipo de pago" << endl;
+        cout << "\nTipo de pago" << endl;
         cout << "1 - Tarjeta" << endl;
         cout << "2 - Efectivo" << endl;
         cout << "Su opción:\t";
@@ -516,18 +537,20 @@ void addOrder(vector <houseOrder> &hList)
         cin.ignore();
 
         if (aux == 1)
-            array.houseInfo.pay = card;
+            auxArray.houseInfo.pay = card;
         else
-            array.houseInfo.pay = cash;
+            auxArray.houseInfo.pay = cash;
 
-        hList.push_back(array);
+
+        hList.push_back(auxArray);
         
         }
         else
         {
-            choice = 2;
-            cout << "Regresando al menu principal....\n"; 
+         choice = 2;
+         cout << "\tRegresando al menu principal ...\n";
         }
+        
         
     }while(choice != 2);
 }
@@ -546,37 +569,37 @@ void checkOrders(vector<delivery> dList){
       
         switch(myArray.deliveryInfo.pStarter){
             case cheeseSticks:
-                cout << "Entrada:\tPalitos de queso"<<endl;
+                cout << "Entrada:\t"<< myArray.deliveryInfo.howMuchStarter<<" Palitos de queso"<<endl;
             break;
             case garlicBread:
-                cout << "Entrada:\tPan con ajo"<< endl;
+                cout << "Entrada:\t"<< myArray.deliveryInfo.howMuchStarter<<" Pan con ajo"<< endl;
             break;
             case pizzaRolls:
-                cout << "Entrada:\tPizza rolls"<<endl;
+                cout << "Entrada:\t"<< myArray.deliveryInfo.howMuchStarter<<" Pizza rolls"<<endl;
             break;
         }
 
             switch(myArray.deliveryInfo.pDish){
             case pizza:
-                cout << "Plato fuerte:\tPizza"<<endl;
+                cout << "Plato fuerte:\t"<< myArray.deliveryInfo.howMuchMain <<" Pizza"<<endl;
             break;
             case lasagna:
-                cout << "Plato fuerte:\tLasagna"<< endl;
+                cout << "Plato fuerte:\t"<< myArray.deliveryInfo.howMuchMain <<" Lasagna"<< endl;
             break;
             case pasta:
-                cout << "Plato fuerte:\tPasta"<<endl;
+                cout << "Plato fuerte:\t"<< myArray.deliveryInfo.howMuchMain <<" Pasta"<<endl;
             break;
         }
 
         switch(myArray.deliveryInfo.pDrink){
             case beer:
-                cout << "Bebida:\tCerveza"<<endl;
+                cout << "Bebida:\t"<< myArray.deliveryInfo.howMuchDrink <<" Cerveza"<<endl;
             break;
             case soda:
-                cout << "Bebida:\tSoda"<< endl;
+                cout << "Bebida:\t"<< myArray.deliveryInfo.howMuchDrink <<" Soda"<< endl;
             break;
             case tea:
-                cout << "Bebida:\tTe helado"<<endl;
+                cout << "Bebida:\t"<< myArray.deliveryInfo.howMuchDrink <<" Te helado"<<endl;
             break;
         }
 
@@ -597,42 +620,42 @@ void checkOrders(vector<houseOrder> hList){
         cout <<"\n\t***No hay ordenes!***";
     else{
         houseOrder myArray = hList.back();
-        cout <<"\nNombre del cliente:\t" << myArray.houseInfo.name << endl;
+         cout <<"\nNombre del cliente:\t" << myArray.houseInfo.name << endl;
         cout << "\nId de orden:\t" <<myArray.houseInfo.idOrder << endl;
       
         switch(myArray.houseInfo.pStarter){
             case cheeseSticks:
-                cout << "Entrada:\tPalitos de queso"<<endl;
+                cout << "Entrada:\t"<< myArray.houseInfo.howMuchStarter<<" Palitos de queso"<<endl;
             break;
             case garlicBread:
-                cout << "Entrada:\tPan con ajo"<< endl;
+                cout << "Entrada:\t"<< myArray.houseInfo.howMuchStarter<<" Pan con ajo"<< endl;
             break;
             case pizzaRolls:
-                cout << "Entrada:\tPizza rolls"<<endl;
+                cout << "Entrada:\t"<< myArray.houseInfo.howMuchStarter<<" Pizza rolls"<<endl;
             break;
         }
 
             switch(myArray.houseInfo.pDish){
             case pizza:
-                cout << "Plato fuerte:\tPizza"<<endl;
+                cout << "Plato fuerte:\t"<< myArray.houseInfo.howMuchMain <<" Pizza"<<endl;
             break;
             case lasagna:
-                cout << "Plato fuerte:\tLasagna"<< endl;
+                cout << "Plato fuerte:\t"<< myArray.houseInfo.howMuchMain <<" Lasagna"<< endl;
             break;
             case pasta:
-                cout << "Plato fuerte:\tPasta"<<endl;
+                cout << "Plato fuerte:\t"<< myArray.houseInfo.howMuchMain <<" Pasta"<<endl;
             break;
         }
 
         switch(myArray.houseInfo.pDrink){
             case beer:
-                cout << "Bebida:\tCerveza"<<endl;
+                cout << "Bebida:\t"<< myArray.houseInfo.howMuchDrink <<" Cerveza"<<endl;
             break;
             case soda:
-                cout << "Bebida:\tSoda"<< endl;
+                cout << "Bebida:\t"<< myArray.houseInfo.howMuchDrink <<" Soda"<< endl;
             break;
             case tea:
-                cout << "Bebida:\tTe helado"<<endl;
+                cout << "Bebida:\t"<< myArray.houseInfo.howMuchDrink <<" Te helado"<<endl;
             break;
         }
 
@@ -705,12 +728,12 @@ void waitingtime(vector<delivery> myList, float myTime)
     //si la lista esta vacia regresa el valor de tiempo total de espera y el tiempo de espera.
     if (myList.empty()){
         if(myTime <= 0){
-            cout<<"No hay tiempo de espera!\n";
+            cout<<"\n\t***No hay tiempo de espera!***\n";
             return;
         }
         else{
         cout <<"El tiempo total de espera es:\t" << floor (myTime) << " minutos"<< endl;
-        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+2))<< " minutos"<< endl;
+        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+1))<< " minutos"<< endl;
         }
     }
         
@@ -730,12 +753,12 @@ void waitingtime(vector<houseOrder> myList, float myTime)
     //si la lista esta vacia regresa el valor de tiempo total de espera y el tiempo de espera.
     if (myList.empty()){
         if(myTime <= 0){
-            cout << "No hay tiempo de espera!\n";
+            cout << "\n\t**No hay tiempo de espera!**\n";
             return;
         }
         else{
         cout <<"El tiempo total de espera es:\t" << floor (myTime) << " minutos"<< endl;
-        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+2))<< " minutos" <<endl;
+        cout <<"\nEl tiempo promedio es:\t"<< floor(myTime/(myList.size()+1))<< " minutos" <<endl;
         }
     }
         
@@ -750,14 +773,14 @@ void waitingtime(vector<houseOrder> myList, float myTime)
 }
 
 //calcular total de ventas en el dia en la lista de domicilio
-float totalSale(vector<delivery> myList1, int total)
+float totalSale(vector<delivery> myList1, float total)
 {
 
      if(myList1.empty()){
          if (total <= 0)
             return 0;
         else{ 
-            return (total * 0.13) + total;
+            return ((total * 0.13) + total);
         }
      }
      else{
@@ -770,12 +793,12 @@ float totalSale(vector<delivery> myList1, int total)
         }
 }
 //calcular total de ventas en el dia en la lista de domicilio
-float totalSale(vector<houseOrder> myList1, int total){
+float totalSale(vector<houseOrder> myList1, float total){
       if(myList1.empty()){
          if (total <= 0)
             return 0;
         else{ 
-            return (total * 0.13) + total;
+            return ((total * 0.13) + total);
         }
      }
      else{
@@ -929,6 +952,7 @@ void deleteMenu(vector<delivery> &dList, vector<houseOrder> &hList){
 void dispatchMenu(vector<delivery> &myList, vector<delivery> &dmyList){
     int decision = 0;
     
+    cout <<"\n\t***Despacho de ordenes***\n";
     cout <<"\n1. Despachar todas las ordenes\n";
     cout <<"2. Despachar ultima orden\n";
     cout <<"Su opcion:\t"; cin >> decision; cin.ignore();
@@ -951,6 +975,7 @@ void dispatchMenu(vector<delivery> &myList, vector<delivery> &dmyList){
 void dispatchMenu(vector<houseOrder> &myList, vector<houseOrder> &dmyList){
     int decision = 0;
     
+    cout <<"\n\t***Despacho de ordenes***\n";
     cout <<"\n1. Despachar todas las ordenes\n";
     cout <<"2. Despachar ultima orden\n";
     cout <<"Su opcion:\t"; cin >> decision; cin.ignore();
